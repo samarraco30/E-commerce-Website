@@ -1,0 +1,16 @@
+ :root {
+  --primary: #000871;
+   --primary-dark: #24292f;
+   --white: #ffffff;
+   --background: #f7f8fa;
+   --soft-blue: #f2f4f7;
+   --accent: #f2a541;
+   --text-primary: #24292f;
+   --text-secondary: #667085;
+   --border: #e5e7eb;
+   --success: #16a34a;
+   --warning: #f59e0b;
+   --danger: #dc2626;
+   --radius: 10px;
+   --shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}

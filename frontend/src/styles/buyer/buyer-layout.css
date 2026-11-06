@@ -1,0 +1,54 @@
+
+.buyer-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #202a44;
+}
+
+.buyer-main-content {
+  flex: 1;
+  width: 100%;
+}
+
+.buyer-footer {
+  background: #f7f8fa;
+  border-top: 1px solid #e5e7eb;
+  color: #344054;
+  margin-top: 50px;
+}
+
+.buyer-footer-inner {
+  max-width: 1440px;
+  margin: auto;
+  padding: 28px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.buyer-footer-inner strong {
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+.buyer-footer-inner p {
+  color: #667085;
+  font-size: 12px;
+  margin: 6px 0 0;
+}
+
+.buyer-footer-inner > span {
+  color: #667085;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .buyer-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 25px 5%;
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <rect width="640" height="480" fill="#f3f4f6"/>
+  <circle cx="320" cy="214" r="96" fill="#e5e7eb"/>
+  <path d="M272 190h96l-8 104h-80l-8-104Z" fill="#fff" stroke="#000871" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M290 190c0-22 13-38 30-38s30 16 30 38" fill="none" stroke="#000871" stroke-width="8" stroke-linecap="round"/>
+  <path d="M294 228h52" stroke="#c7cce0" stroke-width="8" stroke-linecap="round"/>
+  <text x="320" y="365" fill="#667085" font-family="Arial, sans-serif" font-size="20" text-anchor="middle">Product image unavailable</text>
+</svg>

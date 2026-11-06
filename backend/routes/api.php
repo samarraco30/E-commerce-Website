@@ -1,8 +1,77 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\DeliveryAddressController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\SellerController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('/marketplace/products', [SellerController::class, 'publicProducts']);
+Route::get('/marketplace/products/{product}/reviews', [SellerController::class, 'publicProductReviews']);
+Route::get('/marketplace/products/{product}/image', [SellerController::class, 'productImage']);
+Route::get('/marketplace/products/{product}/media/{index}', [SellerController::class, 'productMedia']);
+Route::get('/marketplace/products/{product}/video', [SellerController::class, 'productVideo']);
+Route::get('/marketplace/products/{product}/producer-media/{index}', [SellerController::class, 'producerMedia']);
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/forgot-password', [AuthController::class, 'sendPasswordResetLink'])->middleware('throttle:5,1');
+Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum', 'account.active'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::post('/orders/discount', [OrderController::class, 'validateDiscount']);
+    Route::post('/orders/{orderNumber}/reorder', [OrderController::class, 'reorder']);
+    Route::post('/orders/{orderNumber}/returns', [OrderController::class, 'requestReturn']);
+    Route::post('/orders/{orderNumber}/reviews', [OrderController::class, 'storeReview']);
+    Route::get('/orders/{orderNumber}', [OrderController::class, 'show']);
+    Route::patch('/orders/{orderNumber}/cancel', [OrderController::class, 'cancel']);
+    Route::get('/buyer/vouchers', [OrderController::class, 'buyerVouchers']);
+    Route::post('/buyer/vouchers/{discount}/claim', [OrderController::class, 'claimVoucher']);
+    Route::get('/seller/orders', [OrderController::class, 'sellerOrders']);
+    Route::patch('/seller/orders/{orderNumber}/status', [OrderController::class, 'updateSellerStatus']);
+    Route::get('/addresses', [DeliveryAddressController::class, 'index']);
+    Route::post('/addresses', [DeliveryAddressController::class, 'store']);
+    Route::patch('/addresses/{address}', [DeliveryAddressController::class, 'update']);
+    Route::delete('/addresses/{address}', [DeliveryAddressController::class, 'destroy']);
+    Route::get('/seller/application', [SellerController::class, 'application']);
+    Route::post('/seller/application', [SellerController::class, 'submitApplication']);
+    Route::post('/seller/test-activate', [SellerController::class, 'activateTestSeller']);
+    Route::get('/seller/dashboard', [SellerController::class, 'dashboard']);
+    Route::patch('/seller/shop', [SellerController::class, 'updateShop']);
+    Route::post('/seller/products', [SellerController::class, 'storeProduct']);
+    Route::patch('/seller/products/{product}', [SellerController::class, 'updateProduct']);
+    Route::delete('/seller/products/{product}', [SellerController::class, 'deleteProduct']);
+    Route::post('/seller/products/{product}/image', [SellerController::class, 'uploadProductImage']);
+    Route::post('/seller/products/{product}/media', [SellerController::class, 'uploadProductMedia']);
+    Route::delete('/seller/products/{product}/media/{index}', [SellerController::class, 'deleteProductMedia']);
+    Route::patch('/seller/products/{product}/media/order', [SellerController::class, 'reorderProductMedia']);
+    Route::post('/seller/products/{product}/video', [SellerController::class, 'uploadProductVideo']);
+    Route::delete('/seller/products/{product}/video', [SellerController::class, 'deleteProductVideo']);
+    Route::post('/seller/products/{product}/producer-media', [SellerController::class, 'uploadProducerMedia']);
+    Route::delete('/seller/products/{product}/producer-media/{index}', [SellerController::class, 'deleteProducerMedia']);
+    Route::get('/seller/discounts', [SellerController::class, 'discounts']);
+    Route::post('/seller/discounts', [SellerController::class, 'storeDiscount']);
+    Route::delete('/seller/discounts/{discount}', [SellerController::class, 'deleteDiscount']);
+    Route::get('/seller/reviews', [SellerController::class, 'reviews']);
+    Route::post('/seller/reviews/{review}/response', [SellerController::class, 'respondToReview']);
+    Route::get('/seller/reports/sales.csv', [SellerController::class, 'downloadSalesReport']);
+    Route::get('/admin/seller-applications', [SellerController::class, 'adminApplications']);
+    Route::patch('/admin/seller-applications/{application}', [SellerController::class, 'reviewApplication']);
+    Route::get('/admin/seller-applications/{application}/documents/{document}', [SellerController::class, 'downloadDocument']);
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/accounts', [AdminController::class, 'accounts']);
+    Route::patch('/admin/accounts/{user}', [AdminController::class, 'updateAccount']);
+    Route::get('/admin/products', [AdminController::class, 'products']);
+    Route::patch('/admin/products/{product}/moderation', [AdminController::class, 'moderateProduct']);
+    Route::get('/admin/transactions', [AdminController::class, 'transactions']);
+    Route::get('/admin/transactions/report.csv', [AdminController::class, 'transactionsReport']);
+    Route::get('/admin/returns', [AdminController::class, 'returnRequests']);
+    Route::patch('/admin/returns/{returnRequest}', [AdminController::class, 'updateReturnRequest']);
+    Route::get('/admin/settings', [AdminController::class, 'settings']);
+    Route::patch('/admin/settings', [AdminController::class, 'updateSettings']);
+});
+
+Route::get('/user', [AuthController::class, 'user'])->middleware(['auth:sanctum', 'account.active']);
